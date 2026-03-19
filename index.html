@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trip Balance - Split expenses effortlessly</title>
+  <meta name="description" content="Trip Balance helps you split group travel expenses across multiple currencies. Track, settle, and share - all offline.">
+  <link rel="icon" type="image/png" href="./icon.png">
+  <style>
+    :root {
+      --primary: #5BA89D;
+      --primary-dark: #4a9186;
+      --primary-light: #e8f5f2;
+      --text: #1a2b2f;
+      --text-secondary: #6b7c80;
+      --bg: #f8fafb;
+      --card: #ffffff;
+      --radius: 16px;
+      --radius-sm: 10px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ---- NAV ---- */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      background: rgba(248, 250, 251, 0.85);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text);
+    }
+    .nav-brand img {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+    }
+    .nav-brand span {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+    .nav-links { display: flex; gap: 28px; align-items: center; }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 15px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      background: var(--primary) !important;
+      color: #fff !important;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-weight: 600 !important;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .nav-cta:hover { background: var(--primary-dark) !important; transform: translateY(-1px); }
+
+    /* ---- HERO ---- */
+    .hero {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 140px 24px 80px;
+      display: flex;
+      align-items: center;
+      gap: 60px;
+    }
+    .hero-text { flex: 1; }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--primary-light);
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      margin-bottom: 20px;
+    }
+    .hero h1 .highlight {
+      background: linear-gradient(135deg, var(--primary), #3db8a4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p {
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      max-width: 480px;
+      margin-bottom: 32px;
+    }
+    .hero-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary);
+      color: #fff;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 14px 28px;
+      border-radius: 12px;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 16px rgba(91, 168, 157, 0.3);
+    }
+    .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 6px 24px rgba(91, 168, 157, 0.4); }
+    .btn-primary svg { width: 20px; height: 20px; }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 500;
+      padding: 14px 20px;
+      border-radius: 12px;
+      transition: color 0.2s;
+    }
+    .btn-secondary:hover { color: var(--text); }
+
+    .hero-visual {
+      flex: 0 0 320px;
+      position: relative;
+    }
+    .phone-frame {
+      width: 280px;
+      height: 560px;
+      background: linear-gradient(145deg, var(--primary), #3db8a4);
+      border-radius: 40px;
+      padding: 12px;
+      box-shadow: 0 30px 60px rgba(91, 168, 157, 0.25), 0 10px 20px rgba(0,0,0,0.08);
+      position: relative;
+    }
+    .phone-screen {
+      width: 100%;
+      height: 100%;
+      background: var(--bg);
+      border-radius: 30px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .phone-header {
+      background: var(--card);
+      padding: 40px 20px 16px;
+    }
+    .phone-header-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .phone-trip-card {
+      background: var(--card);
+      margin: 8px 12px;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+    .phone-trip-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 3px;
+    }
+    .phone-trip-date {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-bottom: 10px;
+    }
+    .phone-trip-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .phone-avatars {
+      display: flex;
+    }
+    .phone-avatar {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid var(--card);
+      font-size: 10px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      margin-left: -6px;
+    }
+    .phone-avatar:first-child { margin-left: 0; }
+    .phone-amount {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .phone-fab {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      width: 44px;
+      height: 44px;
+      background: var(--primary);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 22px;
+      font-weight: 300;
+      box-shadow: 0 4px 12px rgba(91, 168, 157, 0.4);
+    }
+
+    .floating-card {
+      position: absolute;
+      background: var(--card);
+      border-radius: 12px;
+      padding: 12px 16px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+      white-space: nowrap;
+    }
+    .floating-card.fc-1 {
+      top: 60px;
+      right: -40px;
+      animation: float1 3s ease-in-out infinite;
+    }
+    .floating-card.fc-2 {
+      bottom: 100px;
+      left: -50px;
+      animation: float2 3.5s ease-in-out infinite;
+    }
+    .fc-icon {
+      font-size: 18px;
+      margin-right: 8px;
+    }
+    .fc-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .fc-value {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    @keyframes float1 {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    @keyframes float2 {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(8px); }
+    }
+
+    /* ---- FEATURES ---- */
+    .features {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 80px 24px;
+    }
+    .features-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+    .features-header h2 {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+    .features-header p {
+      font-size: 17px;
+      color: var(--text-secondary);
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .feature-card {
+      background: var(--card);
+      border: 1px solid rgba(0,0,0,0.06);
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.06);
+    }
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 18px;
+    }
+    .feature-card h3 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .feature-card p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+
+    /* ---- HOW IT WORKS ---- */
+    .how {
+      background: var(--card);
+      border-top: 1px solid rgba(0,0,0,0.05);
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+    .how-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 80px 24px;
+    }
+    .how-inner h2 {
+      text-align: center;
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 56px;
+    }
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+    }
+    .step { text-align: center; }
+    .step-number {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      font-size: 20px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+    }
+    .step h3 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .step p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      max-width: 280px;
+      margin: 0 auto;
+    }
+
+    /* ---- LANGUAGES ---- */
+    .languages {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 80px 24px;
+      text-align: center;
+    }
+    .languages h2 {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+    .languages > p {
+      font-size: 17px;
+      color: var(--text-secondary);
+      margin-bottom: 40px;
+    }
+    .lang-cards {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .lang-card {
+      background: var(--card);
+      border: 1px solid rgba(0,0,0,0.06);
+      border-radius: var(--radius);
+      padding: 28px 40px;
+      text-align: center;
+      transition: transform 0.2s;
+    }
+    .lang-card:hover { transform: translateY(-3px); }
+    .lang-flag { font-size: 36px; margin-bottom: 8px; }
+    .lang-name { font-size: 15px; font-weight: 600; color: var(--text); }
+
+    /* ---- CTA ---- */
+    .cta {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 60px 24px 100px;
+    }
+    .cta-box {
+      background: linear-gradient(135deg, var(--primary), #3db8a4);
+      border-radius: 24px;
+      padding: 60px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-box::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 400px;
+      height: 400px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 50%;
+    }
+    .cta-box h2 {
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+      position: relative;
+    }
+    .cta-box p {
+      font-size: 17px;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 28px;
+      position: relative;
+    }
+    .btn-white {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff;
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 14px 28px;
+      border-radius: 12px;
+      transition: transform 0.15s, box-shadow 0.2s;
+      position: relative;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+
+    /* ---- FOOTER ---- */
+    footer {
+      border-top: 1px solid rgba(0,0,0,0.06);
+      background: var(--card);
+    }
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .footer-brand img { width: 28px; height: 28px; border-radius: 6px; }
+    .footer-brand span { font-size: 14px; font-weight: 600; color: var(--text); }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a {
+      font-size: 14px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--text); }
+    .footer-copy {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    /* ---- RESPONSIVE ---- */
+    @media (max-width: 900px) {
+      .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 120px 24px 60px;
+        gap: 40px;
+      }
+      .hero p { margin: 0 auto 32px; }
+      .hero-actions { justify-content: center; }
+      .hero-visual { flex: none; }
+      .floating-card.fc-1 { right: -10px; }
+      .floating-card.fc-2 { left: -10px; }
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+      .steps { grid-template-columns: 1fr; gap: 32px; }
+    }
+
+    @media (max-width: 600px) {
+      .nav-links a:not(.nav-cta) { display: none; }
+      .hero-visual { display: none; }
+      .features-grid { grid-template-columns: 1fr; }
+      .cta-box { padding: 40px 24px; }
+      .footer-inner { flex-direction: column; text-align: center; }
+    }
+
+    /* ---- HAMBURGER (mobile) ---- */
+    .menu-toggle { display: none; }
+
+    /* ---- SMOOTH SCROLL ---- */
+    html { scroll-behavior: smooth; }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#" class="nav-brand">
+        <img src="../assets/icon.png" alt="Trip Balance">
+        <span>Trip Balance</span>
+      </a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="#" class="nav-cta">Download</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-text">
+      <div class="hero-badge">
+        <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14"><path d="M10 2a1 1 0 011 1v1.323l3.954 1.582a1 1 0 01.589.75l.431 2.584a1 1 0 01-.614 1.088L13 11.382V14a1 1 0 01-.553.894l-2 1A1 1 0 0110 16a1 1 0 01-.447-.106l-2-1A1 1 0 017 14v-2.618l-2.36-1.055a1 1 0 01-.614-1.088l.43-2.584a1 1 0 01.59-.75L9 4.323V3a1 1 0 011-1z"/></svg>
+        100% Offline & Free
+      </div>
+      <h1>Split trip expenses<br><span class="highlight">effortlessly</span></h1>
+      <p>Track shared costs across multiple currencies, settle debts fairly, and keep everyone in the loop. No sign-up required.</p>
+      <div class="hero-actions">
+        <a href="#" class="btn-primary">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+          App Store
+        </a>
+        <a href="#features" class="btn-secondary">Learn more &darr;</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="phone-frame">
+        <div class="phone-screen">
+          <div class="phone-header">
+            <div class="phone-header-title">Trip Balance</div>
+          </div>
+          <div class="phone-trip-card">
+            <div class="phone-trip-name">Barcelona 2026</div>
+            <div class="phone-trip-date">Mar 10 &mdash; Mar 17, 2026</div>
+            <div class="phone-trip-bottom">
+              <div class="phone-avatars">
+                <div class="phone-avatar" style="background:#5BA89D;">M</div>
+                <div class="phone-avatar" style="background:#E8A94E;">A</div>
+                <div class="phone-avatar" style="background:#7B8CDE;">D</div>
+              </div>
+              <div class="phone-amount">&euro; 2,450</div>
+            </div>
+          </div>
+          <div class="phone-trip-card">
+            <div class="phone-trip-name">Tokyo Trip</div>
+            <div class="phone-trip-date">Jan 5 &mdash; Jan 12, 2026</div>
+            <div class="phone-trip-bottom">
+              <div class="phone-avatars">
+                <div class="phone-avatar" style="background:#DE7B7B;">S</div>
+                <div class="phone-avatar" style="background:#5BA89D;">M</div>
+              </div>
+              <div class="phone-amount">&yen; 185,000</div>
+            </div>
+          </div>
+          <div class="phone-trip-card">
+            <div class="phone-trip-name">Weekend Getaway</div>
+            <div class="phone-trip-date">Feb 14 &mdash; Feb 16, 2026</div>
+            <div class="phone-trip-bottom">
+              <div class="phone-avatars">
+                <div class="phone-avatar" style="background:#E8A94E;">A</div>
+                <div class="phone-avatar" style="background:#7B8CDE;">D</div>
+                <div class="phone-avatar" style="background:#DE7B7B;">S</div>
+                <div class="phone-avatar" style="background:#5BA89D;">M</div>
+              </div>
+              <div class="phone-amount">$ 680</div>
+            </div>
+          </div>
+          <div class="phone-fab">+</div>
+        </div>
+      </div>
+      <div class="floating-card fc-1">
+        <span class="fc-icon">&#x1F4B1;</span>
+        <span class="fc-label">Auto rates</span><br>
+        <span class="fc-value">1 USD = 0.92 EUR</span>
+      </div>
+      <div class="floating-card fc-2">
+        <span class="fc-icon">&#x2705;</span>
+        <span class="fc-label">Settlement</span><br>
+        <span class="fc-value">All settled!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features" id="features">
+    <div class="features-header">
+      <h2>Everything you need</h2>
+      <p>Powerful features wrapped in a simple, intuitive interface.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon" style="background: #e8f5f2;">&#x1F4B0;</div>
+        <h3>Multi-Currency</h3>
+        <p>Add expenses in any currency. Live exchange rates with manual override for full control.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background: #FFF3E0;">&#x2696;&#xFE0F;</div>
+        <h3>Smart Settlement</h3>
+        <p>Minimized payment algorithm calculates the fewest transfers to settle all debts.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background: #E8EAF6;">&#x1F4CA;</div>
+        <h3>Analytics</h3>
+        <p>See spending by trip, category, and currency. Understand where your money goes.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background: #FCE4EC;">&#x1F91D;</div>
+        <h3>Flexible Splits</h3>
+        <p>Split equally or custom amounts. Support multiple payers per expense.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background: #E0F2F1;">&#x1F4E4;</div>
+        <h3>Share Summary</h3>
+        <p>Share a beautifully formatted trip summary via any app with one tap.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background: #FFF8E1;">&#x1F512;</div>
+        <h3>100% Private</h3>
+        <p>All data stays on your device. No accounts, no servers, no tracking. Ever.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="how" id="how">
+    <div class="how-inner">
+      <h2>How it works</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Create a trip</h3>
+          <p>Name your trip, set dates, choose a currency, and add your travel companions.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Log expenses</h3>
+          <p>Add each expense with who paid, who should split, the amount, and category.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Settle up</h3>
+          <p>View who owes whom and share the summary. Minimal transfers, maximum clarity.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Languages -->
+  <section class="languages">
+    <h2>Available in 3 languages</h2>
+    <p>Use Trip Balance in your preferred language.</p>
+    <div class="lang-cards">
+      <div class="lang-card">
+        <div class="lang-flag">&#x1F1FA;&#x1F1F8;</div>
+        <div class="lang-name">English</div>
+      </div>
+      <div class="lang-card">
+        <div class="lang-flag">&#x1F1F7;&#x1F1FA;</div>
+        <div class="lang-name">Russian</div>
+      </div>
+      <div class="lang-card">
+        <div class="lang-flag">&#x1F1E6;&#x1F1F2;</div>
+        <div class="lang-name">Armenian</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="cta-box">
+      <h2>Ready to travel stress-free?</h2>
+      <p>Download Trip Balance and never argue about money on your next trip.</p>
+      <a href="#" class="btn-white">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        Download on the App Store
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="../assets/icon.png" alt="Trip Balance">
+        <span>Trip Balance</span>
+      </div>
+      <div class="footer-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="#features">Features</a>
+      </div>
+      <div class="footer-copy">&copy; 2026 Trip Balance. All rights reserved.</div>
+    </div>
+  </footer>
+
+</body>
+</html>

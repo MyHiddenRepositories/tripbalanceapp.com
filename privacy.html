@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy - Trip Balance</title>
+  <meta name="description" content="Privacy Policy for Trip Balance app.">
+  <link rel="icon" type="image/png" href="./icon.png">
+  <style>
+    :root {
+      --primary: #5BA89D;
+      --text: #1a2b2f;
+      --text-secondary: #6b7c80;
+      --bg: #f8fafb;
+      --card: #ffffff;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    nav {
+      background: var(--card);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .nav-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text);
+    }
+    .nav-brand img { width: 32px; height: 32px; border-radius: 7px; }
+    .nav-brand span { font-size: 16px; font-weight: 700; }
+    .nav-back {
+      font-size: 14px;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .nav-back:hover { text-decoration: underline; }
+
+    .content {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+
+    .updated {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 40px;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-top: 36px;
+      margin-bottom: 12px;
+    }
+
+    p, li {
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+
+    ul {
+      padding-left: 24px;
+      margin-bottom: 16px;
+    }
+
+    li { margin-bottom: 8px; }
+
+    a { color: var(--primary); }
+
+    .highlight-box {
+      background: #e8f5f2;
+      border-left: 4px solid var(--primary);
+      padding: 16px 20px;
+      border-radius: 0 8px 8px 0;
+      margin: 24px 0;
+    }
+    .highlight-box p {
+      color: var(--text);
+      margin: 0;
+      font-weight: 500;
+    }
+
+    footer {
+      border-top: 1px solid rgba(0,0,0,0.06);
+      background: var(--card);
+    }
+    .footer-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 24px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    html { scroll-behavior: smooth; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="nav-brand">
+        <img src="../assets/icon.png" alt="Trip Balance">
+        <span>Trip Balance</span>
+      </a>
+      <a href="index.html" class="nav-back">&larr; Back to home</a>
+    </div>
+  </nav>
+
+  <div class="content">
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated: March 20, 2026</p>
+
+    <div class="highlight-box">
+      <p>Trip Balance does not collect, store, or share any personal data. All your information stays on your device.</p>
+    </div>
+
+    <h2>Overview</h2>
+    <p>Trip Balance ("the App") is a mobile application for splitting group travel expenses. The App is designed with privacy as a core principle: it operates entirely on your device with no backend servers, user accounts, or cloud storage.</p>
+
+    <h2>Data Storage</h2>
+    <p>All data you enter in the App, including trips, expenses, participant names, and settings, is stored locally on your device using on-device storage (AsyncStorage). This data is:</p>
+    <ul>
+      <li>Never uploaded to any server</li>
+      <li>Never shared with third parties</li>
+      <li>Never used for analytics or advertising</li>
+      <li>Deleted when you uninstall the App</li>
+    </ul>
+
+    <h2>Network Requests</h2>
+    <p>The App makes network requests solely to fetch currency exchange rates from a public API. These requests:</p>
+    <ul>
+      <li>Do not include any personal information</li>
+      <li>Do not include any device identifiers</li>
+      <li>Are cached locally to minimize network usage</li>
+      <li>Are optional: the App works fully offline with manually entered rates</li>
+    </ul>
+
+    <h2>No Accounts</h2>
+    <p>Trip Balance does not require or offer user accounts, login, registration, or any form of authentication. There is no concept of a user profile on any server.</p>
+
+    <h2>No Tracking</h2>
+    <p>The App does not use any analytics, crash reporting, advertising frameworks, or tracking technologies. No cookies, device fingerprints, or advertising identifiers are collected.</p>
+
+    <h2>No Third-Party SDKs</h2>
+    <p>The App does not integrate any third-party SDKs that collect user data. All dependencies are open-source UI and utility libraries that operate entirely on-device.</p>
+
+    <h2>Children's Privacy</h2>
+    <p>The App does not knowingly collect any information from children. Since no personal data is collected from any user, the App is safe for users of all ages.</p>
+
+    <h2>Changes to This Policy</h2>
+    <p>If we update this privacy policy, we will post the revised version on this page with an updated "Last updated" date. Since the App collects no data, we do not anticipate significant changes.</p>
+
+    <h2>Contact</h2>
+    <p>If you have questions about this privacy policy, please contact us at:</p>
+    <p><a href="mailto:tripbalance.app@gmail.com">tripbalance.app@gmail.com</a></p>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      &copy; 2026 Trip Balance. All rights reserved.
+    </div>
+  </footer>
+
+</body>
+</html>
